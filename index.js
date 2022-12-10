@@ -3,9 +3,19 @@ const fs = require('node:fs');
 const path = require('node:path');
 const { Client, Events, GatewayIntentBits, Collection } = require('discord.js');
 const { token } = require('./config.json');
+const { Player } = require("discord-music-player");
 
 // Create a new client instance
-const client = new Client({ intents: [GatewayIntentBits.Guilds] });
+const client = new Client({ intents: [GatewayIntentBits.Guilds, 
+									  GatewayIntentBits.GuildMessages, 
+									  GatewayIntentBits.GuildVoiceStates, 
+									  GatewayIntentBits.MessageContent] });
+
+const player = new Player(client, {
+    leaveOnEmpty: false, // This options are optional.
+});
+// You can define the Player as *client.player* to easily access it.
+client.player = player;
 
 client.commands = new Collection();
 
@@ -35,6 +45,22 @@ for (const file of eventFiles) {
 		client.on(event.name, (...args) => event.execute(...args, client));
 	}
 }
+
+// client.on('messageCreate', async (message) => {
+//     const args = message.content.slice(settings.prefix.length).trim().split(/ +/g);
+//     const command = args.shift();
+//     let guildQueue = client.player.getQueue(message.guild.id);
+
+//     if(command === 'play') {
+//         let queue = client.player.createQueue(message.guild.id);
+//         await queue.join(message.member.voice.channel);
+//         let song = await queue.play(args.join(' ')).catch(err => {
+//             console.log(err);
+//             if(!guildQueue)
+//                 queue.stop();
+//         });
+//     }
+// })
 
 // Log in to Discord with your client's token
 client.login(token);
