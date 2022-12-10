@@ -8,9 +8,9 @@ module.exports = {
 		
 		client.user.setPresence({
 			activities: [{ 
-				name: `Toco varias parada`, 
-				type: ActivityType.Playing }],
-				status: 'dnd',
+				name: `varias paradas`, 
+				type: ActivityType.Listening }],
+				status: 'online', // online, idle, dnd, offline
 		})
 	}
 };

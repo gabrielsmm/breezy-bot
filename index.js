@@ -1,9 +1,9 @@
 // Require the necessary discord.js classes
-const fs = require('node:fs');
-const path = require('node:path');
 const { Client, Events, GatewayIntentBits, Collection } = require('discord.js');
 const { token } = require('./config.json');
 const { Player } = require("discord-music-player");
+const fs = require('node:fs');
+const path = require('node:path');
 
 // Create a new client instance
 const client = new Client({ intents: [GatewayIntentBits.Guilds, 
@@ -46,44 +46,5 @@ for (const file of eventFiles) {
 	}
 }
 
-// client.on('messageCreate', async (message) => {
-//     const args = message.content.slice(settings.prefix.length).trim().split(/ +/g);
-//     const command = args.shift();
-//     let guildQueue = client.player.getQueue(message.guild.id);
-
-//     if(command === 'play') {
-//         let queue = client.player.createQueue(message.guild.id);
-//         await queue.join(message.member.voice.channel);
-//         let song = await queue.play(args.join(' ')).catch(err => {
-//             console.log(err);
-//             if(!guildQueue)
-//                 queue.stop();
-//         });
-//     }
-// })
-
 // Log in to Discord with your client's token
 client.login(token);
-
-// When the client is ready, run this code (only once)
-// We use 'c' for the event parameter to keep it separate from the already defined 'client'
-// client.once(Events.ClientReady, c => {
-// 	console.log(`\nTudo certo macaco\n`);
-// });
-
-// client.on(Events.InteractionCreate, async interaction => {
-//     if (!interaction.isChatInputCommand()) return;
-//     const command = interaction.client.commands.get(interaction.commandName);
-
-// 	if (!command) {
-// 		console.error(`Nenhum comando com esse nome foi encontrado ${interaction.commandName}.`);
-// 		return;
-// 	}
-
-// 	try {
-// 		await command.execute(interaction, client);
-// 	} catch (error) {
-// 		console.error(error);
-// 		await interaction.reply({ content: 'Tem um erro nesse comando!', ephemeral: true });
-// 	}
-// });
