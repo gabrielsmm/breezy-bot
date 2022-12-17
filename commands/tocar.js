@@ -14,11 +14,13 @@ module.exports = {
             let guildQueue = client.player.getQueue(interaction.guild.id);
             let queue = client.player.createQueue(interaction.guild.id);
             await queue.join(interaction.member.voice.channel);
-            await interaction.reply(`Procurando por ${songNameToSearch}...`);
+            await interaction.reply('Procurando por `'+songNameToSearch+'`');
             let song = await queue.play(songNameToSearch).catch(err => {
-                console.log(err);
+                interaction.editReply('Não foi possível tocar a música informada');
+                console.error(err);
                 if(!guildQueue)
                     queue.stop();
+                return;
             });
             let embed = new EmbedBuilder()
             .setTitle(`Tocando agora: ${song.name}`)
@@ -30,15 +32,7 @@ module.exports = {
                 { name: 'Autor', value: song.author, inline: true },
             );
             if (queue.isPlaying) {
-                embed = new EmbedBuilder()
-                .setTitle(`Adicionado à fila: ${song.name}`)
-                .setThumbnail(song.thumbnail)
-                .setURL(song.url)
-                .setColor('Purple')
-                .addFields(
-                    { name: 'Duração', value: song.duration, inline: true },
-                    { name: 'Autor', value: song.author, inline: true },
-                );
+                embed.setTitle(`Adicionado à fila: ${song.name}`);
             }
             await interaction.channel.send({
                 embeds: [embed],
