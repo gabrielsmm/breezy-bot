@@ -9,11 +9,16 @@ module.exports = {
         try {
             const queue = useQueue(interaction.guild.id);
 
+            if (queue.size === 0) {
+                await interaction.reply({ content: 'Não consigo pular essa meu nobre, está na última música 🤨', ephemeral: true });
+                return;
+            }
+
             queue.node.skip();
 
-            await interaction.reply({ content: 'Pulando para a próxima música...', ephemeral: false });
+            await interaction.reply({ content: 'Pulando para a próxima música... 🫡', ephemeral: false });
         } catch (error) {
-            await interaction.reply({ content: 'A fila está vazia, não encontrei a próxima música', ephemeral: true });
+            await interaction.reply({ content: 'A fila está vazia, não encontrei a próxima música 😵', ephemeral: true });
             console.log(error);
         }
 	},

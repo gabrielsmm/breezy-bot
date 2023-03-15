@@ -26,12 +26,16 @@ module.exports = {
             });
             
             if (queue) {
-                await interaction.editReply({ content: 'Adicionando `'+songNameToSearch+'`...', ephemeral: false });
+                await interaction.editReply({ content: 'Adicionando `'+songNameToSearch+'`... 🫡' });
             } else {
-                await interaction.editReply({ content: 'Tocando `'+songNameToSearch+'`...', ephemeral: false });
+                await interaction.editReply({ content: 'Tocando `'+songNameToSearch+'`... 🫡' });
             }
         } catch (error) {
-            await interaction.editReply({ content: 'Você precisa estar em uma call para ouvir músicas!', ephemeral: true });
+            if (String(error).includes('voice')) {
+                await interaction.editReply({ content: 'Opa meu guerreiro, parece que você não está em uma call 🤔' });
+            } else {
+                await interaction.editReply({ content: 'Ocorreu um erro, tente novamente mais tarde 😵‍💫' });
+            }
             console.log(error);
         }
 	},

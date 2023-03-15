@@ -9,7 +9,7 @@ module.exports = {
         const command = client.commands.get(commandName);
 
         if (!command) {
-            console.error(`Nenhum comando com esse nome foi encontrado.`);
+            // console.error(`Nenhum comando com esse nome foi encontrado.`);
             return;
         }
 

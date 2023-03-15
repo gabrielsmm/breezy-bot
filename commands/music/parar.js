@@ -11,11 +11,11 @@ module.exports = {
 
             queue.delete();
 
-            const message = await interaction.reply({ content: 'Missão concluída, até mais...', fetchReply: true });
+            const message = await interaction.reply({ content: 'Missão concluída, até mais... 🫡', fetchReply: true });
 
             message.react('✅');
         } catch (error) {
-            await interaction.reply({ content: 'Não tem nada tocando no momento', ephemeral: true });
+            await interaction.reply({ content: 'Não tem nada tocando no momento 🤔', ephemeral: true });
             console.log(error);
         }
 	},
