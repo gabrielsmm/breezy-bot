@@ -1,7 +1,7 @@
 // Require the necessary discord.js classes
 const { Client, GatewayIntentBits, Collection } = require('discord.js');
 const { token } = require('./config.json');
-const { Player } = require("discord-music-player");
+const { Player } = require('discord-player');
 const fs = require('node:fs');
 const path = require('node:path');
 
@@ -12,11 +12,7 @@ const client = new Client({ intents: [GatewayIntentBits.Guilds,
 									  GatewayIntentBits.MessageContent,
 									  GatewayIntentBits.GuildMembers] });
 
-const player = new Player(client, {
-    leaveOnEmpty: false, // This options are optional.
-});
-// You can define the Player as *client.player* to easily access it.
-client.player = player;
+const player = new Player(client);
 
 client.commands = new Collection();
 
@@ -37,8 +33,8 @@ directories.forEach((dir) => {
 	});
 });
 
-// Search for all events
-const eventsPath = path.join(__dirname, 'events');
+// Search for all general events
+const eventsPath = path.join(__dirname, 'events/general');
 const eventsFiles = fs.readdirSync(eventsPath); 
 console.log(`Carregando um total de ${eventsFiles.length} eventos.`);
 eventsFiles.filter(file => file.endsWith('.js'))
@@ -50,6 +46,17 @@ eventsFiles.filter(file => file.endsWith('.js'))
 	} else {
 		client.on(event.name, (...args) => event.execute(...args, client));
 	}
+});
+
+// Search for all music events
+const musicEventsPath = path.join(__dirname, 'events/music');
+const musicEventsFiles = fs.readdirSync(musicEventsPath); 
+console.log(`Carregando um total de ${musicEventsFiles.length} eventos de música.`);
+musicEventsFiles.filter(file => file.endsWith('.js'))
+.forEach((file) => {
+	const filePath = path.join(musicEventsPath, file);
+	const event = require(filePath);
+	player.events.on(event.name, (...args) => event.execute(...args));
 });
 
 // Log in to Discord with your client's token

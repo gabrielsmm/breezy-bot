@@ -10,13 +10,19 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@discord-player/extractor": "^4.1.1",
     "@discordjs/opus": "^0.8.0",
+    "@distube/ytdl-core": "^4.11.7",
     "axios": "^1.2.1",
-    "discord-music-player": "^9.1.1",
+    "discord-player": "^6.1.0",
     "discord.js": "^14.7.1",
+    "ffmpeg-static": "^5.1.0",
     "fs-extra": "^11.1.0",
     "isomorphic-unfetch": "^3.1.0",
     "nodejs-file-downloader": "^4.10.3",
-    "openai": "^3.2.1"
+    "openai": "^3.2.1",
+    "opusscript": "^0.0.8",
+    "play-dl": "^1.9.6",
+    "ytdl-core": "^4.11.2"
   }
 }

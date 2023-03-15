@@ -1,5 +1,5 @@
 const { Events, EmbedBuilder, AttachmentBuilder } = require('discord.js');
-const { channel_welcome } = require('../config.json');
+const { channel_welcome } = require('../../config.json');
 const linkGenerator = 'https://api.discorddevtools.xyz/welcome-image-generator/generate.png?';
 
 module.exports = {

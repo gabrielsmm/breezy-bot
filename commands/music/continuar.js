@@ -1,4 +1,5 @@
 const { SlashCommandBuilder } = require('discord.js');
+const { useQueue } = require("discord-player");
 
 module.exports = {
 	data: new SlashCommandBuilder()
@@ -6,9 +7,12 @@ module.exports = {
 		.setDescription('Continua tocando a música que foi pausada'),
 	async execute(interaction, client) {
         try {
-            let guildQueue = client.player.getQueue(interaction.guild.id);
-            guildQueue.setPaused(false);
-            const message = await interaction.reply({ content: 'Continuando...', fetchReply: true });
+            const queue = useQueue(interaction.guild.id);
+
+            queue.node.setPaused(false);
+
+            const message = await interaction.reply({ content: 'Voltando a tocar...', fetchReply: true });
+
             message.react('✅');
         } catch (error) {
             await interaction.reply({ content: 'Não tem nada pausado no momento', ephemeral: true });

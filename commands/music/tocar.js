@@ -1,4 +1,5 @@
 const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
+const { useMasterPlayer, useQueue } = require("discord-player");
 
 module.exports = {
 	data: new SlashCommandBuilder()
@@ -11,35 +12,26 @@ module.exports = {
 	async execute(interaction, client) {
         try {
             let songNameToSearch = interaction.options.getString('musica');
-            let guildQueue = client.player.getQueue(interaction.guild.id);
-            let queue = client.player.createQueue(interaction.guild.id);
-            await queue.join(interaction.member.voice.channel);
-            await interaction.reply('Procurando por `'+songNameToSearch+'`');
-            let song = await queue.play(songNameToSearch).catch(err => {
-                interaction.editReply('Não foi possível tocar a música informada');
-                console.error(err);
-                if(!guildQueue)
-                    queue.stop();
-                return;
+
+            const player = useMasterPlayer();
+
+            const queue = useQueue(interaction.guild.id);
+
+            await interaction.deferReply({ ephemeral: false });
+
+            await player.play(interaction.member.voice.channel, songNameToSearch, {
+                nodeOptions: {
+                    metadata: interaction.channel
+                }
             });
-            let embed = new EmbedBuilder()
-            .setTitle(`Tocando agora: ${song.name}`)
-            .setThumbnail(song.thumbnail)
-            .setURL(song.url)
-            .setColor('Purple')
-            .addFields(
-                { name: 'Duração', value: song.duration, inline: true },
-                { name: 'Autor', value: song.author, inline: true },
-            );
-            if (queue.isPlaying) {
-                embed.setTitle(`Adicionado à fila: ${song.name}`);
+            
+            if (queue) {
+                await interaction.editReply({ content: 'Adicionando `'+songNameToSearch+'`...', ephemeral: false });
+            } else {
+                await interaction.editReply({ content: 'Tocando `'+songNameToSearch+'`...', ephemeral: false });
             }
-            await interaction.channel.send({
-                embeds: [embed],
-                ephemeral: false // true -> apenas quem mandou pode ver
-            });
         } catch (error) {
-            await interaction.reply({ content: 'Você precisa estar em uma call para ouvir músicas!', ephemeral: true });
+            await interaction.editReply({ content: 'Você precisa estar em uma call para ouvir músicas!', ephemeral: true });
             console.log(error);
         }
 	},

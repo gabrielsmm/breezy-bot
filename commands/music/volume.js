@@ -1,4 +1,5 @@
 const { SlashCommandBuilder } = require('discord.js');
+const { useQueue } = require("discord-player");
 
 module.exports = {
 	data: new SlashCommandBuilder()
@@ -11,11 +12,15 @@ module.exports = {
 	async execute(interaction, client) {
         try {
             let volume = interaction.options.getString('volume');
-            let guildQueue = client.player.getQueue(interaction.guild.id);
+
             if (Number.isNaN(parseInt(volume))) return interaction.reply({ content: 'Por favor especifique o volume que deseja colocar', ephemeral: true });
-            if (guildQueue == null || guildQueue == undefined) return interaction.reply({ content: 'Não tem nada tocando no momento', ephemeral: true });
-            guildQueue.setVolume(parseInt(volume));
+
+            const queue = useQueue(interaction.guild.id);
+
+            queue.node.setVolume(parseInt(volume));
+
             const message = await interaction.reply({ content: 'Ajustando para o volume `'+volume+'`', fetchReply: true });
+            
             message.react('✅');
         } catch (error) {
             await interaction.reply({ content: 'Erro ao ajustar o volume', ephemeral: true });
