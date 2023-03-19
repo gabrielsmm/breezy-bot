@@ -2,11 +2,8 @@
 const { Client, GatewayIntentBits, Collection } = require('discord.js');
 const { token } = require('./config.json');
 const { Player } = require('discord-player');
-
 const fs = require('node:fs');
 const path = require('node:path');
-const cron = require('cron');
-const promoMessage = require('./events/others/promoMessage');
 
 // Create a new client instance
 const client = new Client({ intents: [GatewayIntentBits.Guilds, 
@@ -14,7 +11,7 @@ const client = new Client({ intents: [GatewayIntentBits.Guilds,
 									  GatewayIntentBits.GuildVoiceStates, 
 									  GatewayIntentBits.MessageContent,
 									  GatewayIntentBits.GuildMembers],
-									  allowedMentions: { parse: ["roles", "users"], repliedUser: true }});
+									  disableEveryone: false});
 
 const player = new Player(client);
 
@@ -62,18 +59,6 @@ musicEventsFiles.filter(file => file.endsWith('.js'))
 	const event = require(filePath);
 	player.events.on(event.name, (...args) => event.execute(...args));
 });
-
-// let scheduledMessage = new cron.CronJob('00 00 18 * * *', () => {
-// 	// This runs every day at 18:00:00, you can do anything you want
-// 	console.log('TESTANDO ENVIO DE MENSAGEM');
-// });
-
-let scheduledMessage = new cron.CronJob('*/10 * * * * *', () => {
-	// This runs every day at 18:00:00, you can do anything you want
-	promoMessage.execute(client);
-});
-  
-scheduledMessage.start();
 
 // Log in to Discord with your client's token
 client.login(token);
