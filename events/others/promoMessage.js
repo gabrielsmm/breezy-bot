@@ -4,8 +4,13 @@ const { channel_promo } = require('../../config.json');
 const linkSteamApi = 'https://store.steampowered.com/api/featuredcategories/?l=portuguese';
 
 function formatarMoeda(valor) {
-	const numeroFormatado = parseFloat((valor / 100).toFixed(2));
-	return numeroFormatado.toLocaleString('pt-BR', {style: 'currency', currency: 'BRL'});
+	const simboloMoeda = 'R$';
+	const valorString = valor.toString();
+	const parteInteira = valorString.substring(0, valorString.length - 2);
+	const parteDecimal = valorString.substring(valorString.length - 2).padEnd(2, '0');
+	const parteInteiraFormatada = parteInteira.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+
+	return `${simboloMoeda} ${parteInteiraFormatada},${parteDecimal}`;
 }
 
 module.exports = {

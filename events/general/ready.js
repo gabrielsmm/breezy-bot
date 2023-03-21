@@ -16,7 +16,7 @@ module.exports = {
 		// Executa todos os dias às 18:00:00
 		let scheduledMessage = new cron.CronJob('00 00 18 * * *', () => {
 			promoMessage.execute(client);
-		});
+		}, null, true, 'America/Sao_Paulo');
 
 		// Executa a cada 10 segundos 
 		// let scheduledMessage = new cron.CronJob('*/10 * * * * *', () => {
