@@ -1,7 +1,7 @@
 const { EmbedBuilder } = require('discord.js');
 const { default: axios } = require('axios');
 const { channel_promo } = require('../../config.json');
-const linkSteamApi = 'https://store.steampowered.com/api/featuredcategories/?l=portuguese';
+const linkSteamApi = 'https://store.steampowered.com/api/featuredcategories?cc=br&l=portuguese';
 
 function formatarMoeda(valor) {
 	const simboloMoeda = 'R$';
