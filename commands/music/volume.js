@@ -11,20 +11,18 @@ module.exports = {
             .setRequired(true)),
 	async execute(interaction, client) {
         try {
-            let volume = interaction.options.getString('volume');
+            const volume = interaction.options.getString('volume');
 
-            if (Number.isNaN(parseInt(volume))) return interaction.reply({ content: 'Por favor especifique o volume que deseja colocar 🧐', ephemeral: true });
+            if (Number.isNaN(parseInt(volume))) return interaction.reply({ content: 'Por favor especifique o volume que deseja colocar 🧐' });
 
             const queue = useQueue(interaction.guild.id);
 
             queue.node.setVolume(parseInt(volume));
 
-            const message = await interaction.reply({ content: 'Ajustando para o volume `'+volume+'` 🫡', fetchReply: true });
-            
-            message.react('✅');
+            await interaction.reply({ content: `Ajustando para o volume ${volume} 🫡` });
         } catch (error) {
-            await interaction.reply({ content: 'Não tem nada tocando meu bom 🤔', ephemeral: true });
             console.log(error);
+            await interaction.reply({ content: 'Não tem nada tocando meu bom 🤔' });
         }
 	},
 };

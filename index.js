@@ -14,6 +14,7 @@ const client = new Client({ intents: [GatewayIntentBits.Guilds,
 									  disableEveryone: false});
 
 const player = new Player(client);
+player.extractors.loadDefault();
 
 client.commands = new Collection();
 

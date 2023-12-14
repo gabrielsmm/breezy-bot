@@ -11,12 +11,10 @@ module.exports = {
 
             queue.node.setPaused(true);
 
-            const message = await interaction.reply({ content: 'Pausando... 🫡', fetchReply: true });
-
-            message.react('✅');
+            await interaction.reply({ content: 'Pausando... 🫡' });
         } catch (error) {
-            await interaction.reply({ content: 'Não tem nada tocando no momento 🧐', ephemeral: true });
             console.log(error);
+            await interaction.reply({ content: 'Não tem nada tocando no momento 🧐' });
         }
 	},
 };
